@@ -2,15 +2,14 @@ import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { SiteInfo } from "./types";
 
-const BASE_URL = "http://localhost:8788";
 
 @customElement("link-view")
 export class LinkView extends LitElement {
   @property({ type: String, reflect: true, attribute: "site-title" })
   siteTitle = "";
 
-  @property({ type: String, reflect: true, attribute: "site-href" })
-  siteHref = "https://www.halo.run";
+  @property({ type: String, reflect: true, attribute: "sitehref" })
+  siteHref = "";
 
   @property({ type: String, reflect: true, attribute: "site-desc" })
   siteDesc = "";
@@ -32,6 +31,15 @@ export class LinkView extends LitElement {
   };
 
   override render() {
+      if(this.siteHref === "") {
+          return html`<div class="link-box">
+              <input
+                  @change=${this._onSiteHrefChange}
+                  placeholder="输入网址"
+                  class="bg-gray-50 rounded-md hover:bg-gray-100 block px-2 w-full py-1.5 text-sm text-gray-900 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+              />
+          </div>`;
+      }
     return html`<div class="link-box">
       ${this.loading
         ? html`<span>Loading...</span>`
@@ -47,10 +55,15 @@ export class LinkView extends LitElement {
     </div>`;
   }
 
+    _onSiteHrefChange(e: Event) {
+        const target = e.target as HTMLInputElement;
+        this.siteHref = target.value;
+    }
+
   async fetchSiteInfo(url: string) {
     try {
       this.loading = true;
-      const response = await fetch(`${BASE_URL}/site-info?url=${url}`, {
+      const response = await fetch(`/link-view/api/parse-web?url=${url}`, {
         method: "GET",
         credentials: "same-origin",
       });
@@ -76,7 +89,15 @@ export class LinkView extends LitElement {
   }
   override connectedCallback() {
     super.connectedCallback();
-    this.fetchSiteInfo(this.siteHref);
+    if(this.siteHref && this.siteHref !== "") {
+        this.fetchSiteInfo(this.siteHref);
+    }
+  }
+
+  override updated(changedProperties: Map<string | number | symbol, unknown>) {
+    if (changedProperties.has("siteHref")) {
+      this.fetchSiteInfo(this.siteHref);
+    }
   }
 
   static override styles = css`

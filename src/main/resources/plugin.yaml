@@ -1,20 +1,22 @@
+# nonk8s
+# nok8s
 apiVersion: plugin.halo.run/v1alpha1
 kind: Plugin
 metadata:
   # The name defines how the plugin is invoked,A unique name
-  name: starter
+  name: plugin-link-view
 spec:
   enabled: true
   requires: ">=2.11.0"
   author:
-    name: Halo
-    website: https://github.com/halo-dev
+    name: AeroWang
+    website: https://github.com/AeroWang
   logo: logo.png
   # 'homepage' usually links to the GitHub repository of the plugin
-  homepage: https://github.com/halo-dev/plugin-starter
+  homepage: hhttps://github.com/AeroWang/halo-plugin-link-view
   # 'displayName' explains what the plugin does in only a few words
-  displayName: "插件快速开始模板"
+  displayName: "Link View"
   description: "这是一个插件快速开始模板"
   license:
     - name: "GPL-3.0"
-      url: "https://github.com/halo-dev/plugin-starter/blob/main/LICENSE"
+      url: "https://github.com/AeroWang/halo-plugin-link-view/blob/main/LICENSE"

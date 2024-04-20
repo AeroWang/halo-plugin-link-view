@@ -1,0 +1,15 @@
+# nonk8s
+apiVersion: v1alpha1
+kind: Role
+metadata:
+    name: plugin-link-view-role-parse-site
+    labels:
+        halo.run/role-template: "true"
+    annotations:
+        rbac.authorization.halo.run/module: "LinkView Management"
+        rbac.authorization.halo.run/display-name: "视图链接 Management"
+        rbac.authorization.halo.run/ui-permissions: |
+            ["plugin:my-plugin:person:manage"]
+rules:
+    -   nonResourceURLs: [ "link-view/api/*" ]
+        verbs: [ "get" ]

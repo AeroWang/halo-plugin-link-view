@@ -74,5 +74,4 @@ application-local.properties
 /workplace/
 /src/main/resources/console/
 
-
-
+/ui/src/link-view.iife.js
