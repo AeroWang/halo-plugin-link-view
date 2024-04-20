@@ -1,0 +1,34 @@
+{
+  "name": "link-view-lit",
+  "version": "1.0.0",
+  "license": "GPL-3.0",
+  "author": {
+    "name": "Aero Wang",
+    "url": "https://github.com/aerowang"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "lint": "lit-analyzer && eslint \"src/*.ts\"",
+    "prettier": "prettier \"**/*.{cjs,html,js,json,md,ts}\" --ignore-path ./.gitignore --write"
+  },
+  "dependencies": {
+    "lit": "^3.1.3"
+  },
+  "devDependencies": {
+    "lit-analyzer": "^2.0.3"
+  }
+}
