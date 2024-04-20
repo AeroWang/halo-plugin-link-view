@@ -70,6 +70,9 @@ application-local.yml
 application-local.yaml
 application-local.properties
 
-/ui/node_modules/
+**/node_modules/
 /workplace/
 /src/main/resources/console/
+
+
+
