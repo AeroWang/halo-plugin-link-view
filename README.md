@@ -74,3 +74,9 @@ halo:
 ```
 
 最后重启 Halo 项目即可。
+
+### Build LinkView
+
+```bash
+pnpm run build:link-view
+```

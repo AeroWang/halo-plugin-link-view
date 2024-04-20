@@ -2,6 +2,9 @@ import { definePlugin } from "@halo-dev/console-shared";
 import HomeView from "./views/HomeView.vue";
 import { IconPlug } from "@halo-dev/components";
 import { markRaw } from "vue";
+import { ExtensionLinkView } from "@/components";
+// TODO: 还需 Java 处理注入主题端
+import "./link-view.iife.js";
 
 export default definePlugin({
   components: {},
@@ -25,5 +28,9 @@ export default definePlugin({
       },
     },
   ],
-  extensionPoints: {},
+  extensionPoints: {
+    "default:editor:extension:create": () => {
+      return [ExtensionLinkView];
+    },
+  },
 });
