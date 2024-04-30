@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { SiteInfo } from "./types";
-
+import varStyles from "./var";
 
 @customElement("link-view")
 export class LinkView extends LitElement {
@@ -31,15 +31,15 @@ export class LinkView extends LitElement {
   };
 
   override render() {
-      if(this.siteHref === "") {
-          return html`<div class="link-box">
-              <input
-                  @change=${this._onSiteHrefChange}
-                  placeholder="输入网址"
-                  class="bg-gray-50 rounded-md hover:bg-gray-100 block px-2 w-full py-1.5 text-sm text-gray-900 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
-              />
-          </div>`;
-      }
+    if (this.siteHref === "") {
+      return html`<div class="link-box">
+        <input
+          @change=${this._onSiteHrefChange}
+          placeholder="输入网址"
+          class="bg-gray-50 rounded-md hover:bg-gray-100 block px-2 w-full py-1.5 text-sm text-gray-900 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>`;
+    }
     return html`<div class="link-box">
       ${this.loading
         ? html`<span>Loading...</span>`
@@ -55,10 +55,10 @@ export class LinkView extends LitElement {
     </div>`;
   }
 
-    _onSiteHrefChange(e: Event) {
-        const target = e.target as HTMLInputElement;
-        this.siteHref = target.value;
-    }
+  _onSiteHrefChange(e: Event) {
+    const target = e.target as HTMLInputElement;
+    this.siteHref = target.value;
+  }
 
   async fetchSiteInfo(url: string) {
     try {
@@ -89,8 +89,8 @@ export class LinkView extends LitElement {
   }
   override connectedCallback() {
     super.connectedCallback();
-    if(this.siteHref && this.siteHref !== "") {
-        this.fetchSiteInfo(this.siteHref);
+    if (this.siteHref && this.siteHref !== "") {
+      this.fetchSiteInfo(this.siteHref);
     }
   }
 
@@ -100,98 +100,102 @@ export class LinkView extends LitElement {
     }
   }
 
-  static override styles = css`
-    * {
-      box-sizing: border-box;
-    }
+  static override styles = [
+    varStyles,
+    css`
+      * {
+        box-sizing: border-box;
+      }
 
-    .link-box {
-      width: 100%;
-      position: relative;
-      min-height: 100px;
-      padding: 12px 18px;
-      background-color: #f4f5f5;
-      overflow: hidden;
+      .link-box {
+        width: 100%;
+        position: relative;
+        min-height: 100px;
+        padding: 12px 18px;
+        background-color: #f4f5f5;
+        overflow: hidden;
 
-      border: 1px solid #e3e3e3;
-      border-radius: 8px;
-    }
+        border: 1px solid;
+        border-color: var(--box-border-color);
+        border-radius: 8px;
+      }
 
-    a {
-      text-decoration: none;
-    }
+      a {
+        text-decoration: none;
+      }
 
-    img {
-      object-fit: cover;
-      display: inline-block;
-    }
+      img {
+        object-fit: cover;
+        display: inline-block;
+      }
 
-    .book-mark-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 80%;
-      height: 100%;
-      -o-object-fit: cover;
-      object-fit: cover;
-      filter: blur(50px);
-      opacity: 0.15;
-      z-index: 1;
-    }
+      .book-mark-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 80%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+        filter: blur(50px);
+        opacity: 0.15;
+        z-index: 1;
+      }
 
-    .content {
-      position: relative;
-      z-index: 2;
-      display: inline-flex;
-      width: 100%;
-      overflow: hidden;
-      align-items: center;
-    }
+      .content {
+        position: relative;
+        z-index: 2;
+        display: inline-flex;
+        width: 100%;
+        overflow: hidden;
+        align-items: center;
+      }
 
-    .content .normal-img {
-      width: 78px;
-      height: 78px;
-      border-radius: 8px;
-    }
+      .content .normal-img {
+        width: 78px;
+        height: 78px;
+        border-radius: 8px;
+      }
 
-    .info {
-      width: 100%;
-      overflow: hidden;
-      margin-left: 16px;
-    }
+      .info {
+        width: 100%;
+        overflow: hidden;
+        margin-left: 16px;
+      }
 
-    .info .title {
-      color: #1c1c1c;
-      font-weight: 700;
-      font-size: 15px;
-      line-height: 26px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      .info .title {
+        color: #1c1c1c;
+        font-weight: 700;
+        font-size: 15px;
+        line-height: 26px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-    .info .description {
-      color: #585a5a;
-      margin-top: 4px;
-      font-size: 12px;
-      line-height: 18px;
-      display: -webkit-box;
-      word-break: break-all;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      .info .description {
+        color: #585a5a;
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 18px;
+        display: -webkit-box;
+        word-break: break-all;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-    .info .belong {
-      margin-top: 4px;
-      font-size: 12px;
-      line-height: 18px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  `;
+      .info .belong {
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    `,
+  ];
 }
 
 /*

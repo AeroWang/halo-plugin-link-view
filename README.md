@@ -78,5 +78,5 @@ halo:
 ### Build LinkView
 
 ```bash
-pnpm run build:link-view
+pnpm run build:packages
 ```
