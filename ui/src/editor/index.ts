@@ -29,12 +29,6 @@ export const ExtensionLinkView = Node.create({
   atom: true,
 
   group: "block",
-
-  onUpdate(this) {
-    // TODO: 貌似无用，监听不到子组件自发改变属性值（目的：在主题端不用再次请求接口）
-    console.log(this, "onUpdate");
-  },
-
   onBeforeCreate() {
     const itemKey = "export-text-link-view";
     this.editor.extensionManager.extensions.forEach((extension) => {
@@ -83,10 +77,16 @@ export const ExtensionLinkView = Node.create({
 
   addAttributes() {
     return {
-      sitehref: {
+      target: {
+        default: "_blank",
+        parseHTML: (element: any) => {
+          return element.getAttribute("target");
+        },
+      },
+      href: {
         default: null,
         parseHTML: (element: any) => {
-          return element.getAttribute("sitehref");
+          return element.getAttribute("href");
         },
       },
       type: {
@@ -133,7 +133,7 @@ export const ExtensionLinkView = Node.create({
     return [{ tag: "link-view" }];
   },
   renderHTML({ HTMLAttributes }) {
-    return ["link-view", mergeAttributes(HTMLAttributes)];
+    return ["link-view", mergeAttributes(HTMLAttributes),["a", { href: HTMLAttributes.href, target: HTMLAttributes.target }, HTMLAttributes.href]];
   },
 });
 
@@ -147,7 +147,7 @@ export const linkViewTypes: LinkViewType[] = [
         return;
       }
       const linkViewAttr = getNodeAttributes(editor.state, ExtensionLinkView.name);
-      if (!linkViewAttr || !linkViewAttr.sitehref) {
+      if (!linkViewAttr || !linkViewAttr.href) {
         return;
       }
       editor.commands.insertContent({
@@ -156,16 +156,47 @@ export const linkViewTypes: LinkViewType[] = [
         content: [
           {
             type: ExtensionText.name,
-            text: linkViewAttr.sitehref,
+            text: linkViewAttr.href,
             marks: [{
               type: ExtensionLink.name,
               attrs: {
-                href: linkViewAttr.sitehref,
+                href: linkViewAttr.href,
               }
             }]
           }
         ]
       })
+    },
+  },
+  {
+    // TODO: convert to in line elements
+    key: "title",
+    title: "标题视图",
+    icon: markRaw(MdiLinkVariant),
+    action: ({ editor }) => {
+      if (!isActive(editor.state, ExtensionLink.name)) {
+        return;
+      }
+      editor.chain()
+        .extendMarkRange(ExtensionLink.name)
+        .command(({ tr }) => {
+          return splitLink(tr);
+        })
+        .command(({ tr, state }) => {
+          const linkAttr = getMarkAttributes(state, ExtensionLink.name);
+          if (!linkAttr || !linkAttr.href) {
+            return false;
+          }
+          tr.replaceSelectionWith(
+            state.schema.nodes[ExtensionLinkView.name].create({
+              href: linkAttr.href,
+              type: "title-view",
+            })
+          )
+          return true;
+        })
+        .focus()
+        .run();
     },
   },
   {
@@ -188,7 +219,7 @@ export const linkViewTypes: LinkViewType[] = [
           }
           tr.replaceSelectionWith(
             state.schema.nodes[ExtensionLinkView.name].create({
-              sitehref: linkAttr.href,
+              href: linkAttr.href,
               type: "card",
             })
           )

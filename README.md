@@ -80,3 +80,9 @@ halo:
 ```bash
 pnpm run build:packages
 ```
+
+## TODO
+- [ ] 获取的网站信息为 OpenGraph 形式时，链接卡片视图的左侧图标待适配（基本为大图）
+- [ ] 为标题视图时，转为行内元素
+- [ ] lit 组件打包后的 js 文件注入主题端
+- [ ] loading skeleton
